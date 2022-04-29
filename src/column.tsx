@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import classnames from 'classnames'
-import './column.less'
 
 export interface DragTreeColumnProps {
   width: number | string

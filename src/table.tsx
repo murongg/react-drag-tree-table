@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import React, { useRef, useState } from 'react'
 import type { DragTreeColumnProps } from './column'
 import { DragTreeColumn } from './column'
-import './table.less'
 
 export interface DragTreeTableProps {
   data?: Record<string, any>
