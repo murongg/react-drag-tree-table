@@ -11,6 +11,7 @@ importers:
       '@types/react-dom': ^18.0.0
       '@vitejs/plugin-react': ^1.3.0
       bumpp: ^7.1.1
+      classnames: ^2.3.1
       eslint: ^8.13.0
       esno: ^0.14.1
       less: ^4.1.2
@@ -34,6 +35,7 @@ importers:
       '@types/react-dom': 18.0.3
       '@vitejs/plugin-react': 1.3.1
       bumpp: 7.1.1
+      classnames: 2.3.1
       eslint: 8.13.0
       esno: 0.14.1
       less: 4.1.2
@@ -1004,6 +1006,10 @@ packages:
 
   /ci-info/3.3.0:
     resolution: {integrity: sha512-riT/3vI5YpVH6/qomlDnJow6TBee2PBKSEpx3O32EGPYbWGIRsIlGRms3Sm74wYE1JMo8RnO04Hb12+v1J5ICw==}
+    dev: true
+
+  /classnames/2.3.1:
+    resolution: {integrity: sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==}
     dev: true
 
   /clean-regexp/1.0.0:
