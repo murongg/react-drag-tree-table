@@ -1,6 +1,5 @@
-import { any, func } from "prop-types";
-import { DragTreeColumnProps } from ".";
 import { cloneDeep } from 'lodash-es'
+import type { DragTreeColumnProps } from '.'
 export interface RowDataProps<T> {
   content: any
   _data: T
@@ -9,49 +8,48 @@ export interface RowDataMap<T = any | undefined> {
   key: string | number
   props: RowDataProps<T>[]
   children: RowDataMap<T>[]
-  open: boolean,
+  open: boolean
   _childOpen: boolean
 }
 
 export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[]): RowDataMap<any>[] {
-  let res: RowDataMap<any>[] = []
-  let keys = columns.map(col => col.key)
-  for (let i in data) {
-    let d = data[i]
+  const res: RowDataMap<any>[] = []
+  const keys = columns.map(col => col.key)
+  for (const i in data) {
+    const d = data[i]
     res[i] = {
       key: d.id,
       props: [],
       children: [],
       open: true,
-      _childOpen: true
+      _childOpen: true,
     }
-    for (let k of keys) {
+    for (const k of keys) {
       res[i].props.push({
         content: d[k as string],
-        _data: d
+        _data: d,
       })
     }
-    if (d.children && d.children.length > 0) {
+    if (d.children && d.children.length > 0)
       res[i].children = transformData(columns, d.children)
-    }
   }
   return res
 }
 
-
 export function setOpenAll(rawData: RowDataMap[], currentData: RowDataMap) {
   const newCurrentData = cloneDeep(currentData)
-  const openStatus =  !newCurrentData._childOpen
+  const openStatus = !newCurrentData._childOpen
   setDataOpenStatus(newCurrentData.children, openStatus)
-  let result: RowDataMap[] = cloneDeep(rawData)
+  const result: RowDataMap[] = cloneDeep(rawData)
   const key = newCurrentData.key
 
   function deepSetData(data: RowDataMap[]) {
-    for (let item of data) {
+    for (const item of data) {
       if (item.key === key) {
         item.children = newCurrentData.children
         item._childOpen = openStatus
-      } else {
+      }
+      else {
         deepSetData(item.children)
       }
     }
@@ -60,16 +58,14 @@ export function setOpenAll(rawData: RowDataMap[], currentData: RowDataMap) {
   return result
 }
 
-
 export function setDataOpenStatus(data: RowDataMap[], open: boolean) {
   function deepSetStatus(data: RowDataMap[]) {
-    for (let item of data) {
+    for (const item of data) {
       item.open = open
-      if (item.children && item.children.length > 0) {
+      if (item.children && item.children.length > 0)
         deepSetStatus(item.children)
-      } else {
+      else
         item._childOpen = open
-      }
     }
   }
   deepSetStatus(data)

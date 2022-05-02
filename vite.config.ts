@@ -9,8 +9,8 @@ export default defineConfig({
   plugins: [react(), Unocss({
     presets: [
       presetWind(),
-    ]
-  }),],
+    ],
+  })],
   css: {
     preprocessorOptions: {
       less: {
