@@ -6,23 +6,26 @@ export interface RowDataProps<T> {
 }
 export interface RowDataMap<T = any | undefined> {
   key: string | number
+  parentKey: string | number | null
   props: RowDataProps<T>[]
   children: RowDataMap<T>[]
   open: boolean
-  _childOpen: boolean
+  childOpen: boolean
 }
 
-export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[]): RowDataMap<any>[] {
+export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[], parentKey: string | number | null, key: string): RowDataMap<any>[] {
   const res: RowDataMap<any>[] = []
   const keys = columns.map(col => col.key)
+  
   for (const i in data) {
     const d = data[i]
     res[i] = {
-      key: d.id,
+      key: d[key],
+      parentKey: parentKey || null,
       props: [],
       children: [],
       open: true,
-      _childOpen: true,
+      childOpen: true,
     }
     for (const k of keys) {
       res[i].props.push({
@@ -31,14 +34,14 @@ export function transformData(columns: DragTreeColumnProps[], data: Record<strin
       })
     }
     if (d.children && d.children.length > 0)
-      res[i].children = transformData(columns, d.children)
+      res[i].children = transformData(columns, d.children, d.id, key)
   }
   return res
 }
 
 export function setOpenAll(rawData: RowDataMap[], currentData: RowDataMap) {
   const newCurrentData = cloneDeep(currentData)
-  const openStatus = !newCurrentData._childOpen
+  const openStatus = !newCurrentData.childOpen
   setDataOpenStatus(newCurrentData.children, openStatus)
   const result: RowDataMap[] = cloneDeep(rawData)
   const key = newCurrentData.key
@@ -47,7 +50,7 @@ export function setOpenAll(rawData: RowDataMap[], currentData: RowDataMap) {
     for (const item of data) {
       if (item.key === key) {
         item.children = newCurrentData.children
-        item._childOpen = openStatus
+        item.childOpen = openStatus
       }
       else {
         deepSetData(item.children)
@@ -65,9 +68,21 @@ export function setDataOpenStatus(data: RowDataMap[], open: boolean) {
       if (item.children && item.children.length > 0)
         deepSetStatus(item.children)
       else
-        item._childOpen = open
+        item.childOpen = open
     }
   }
   deepSetStatus(data)
   return data
+}
+
+export function clearHoverStatus() {
+  // const rows = document.querySelectorAll('.tree-row')
+  // for (let i = 0; i < rows.length; i++) {
+  //   const row = rows[i]
+  //   const hoverBlock = row.children[row.children.length - 1]
+  //   hoverBlock.style.display = 'none'
+  //   hoverBlock.children[0].style.opacity = 0.1
+  //   hoverBlock.children[1].style.opacity = 0.1
+  //   hoverBlock.children[2].style.opacity = 0.1
+  // }
 }

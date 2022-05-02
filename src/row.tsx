@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import React from 'react'
 import type { RowDataMap } from './utils'
-
 export interface DragTreeRowProps {
   data: RowDataMap<any>[]
   depth?: number
@@ -14,7 +13,7 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, onCli
     depths.push(i)
 
   const Space = depths.map(d => <div style={{ width: '10px' }} key={d}></div>)
-  const DragTr = (d: RowDataMap) => {
+  const DragTd = (d: RowDataMap) => {
     return d.props.map((p: any, index: number) => {
       if (!d.children || d.children.length === 0) {
         if (!d.open) {
@@ -41,15 +40,36 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, onCli
       return null
     })
   }
+
+  const onDragStart: React.DragEventHandler<HTMLTableRowElement> = (event) => {
+    const target = event.currentTarget
+    target.style.opacity = '0.5'
+    const key = target.getAttribute('data-key') as string
+    const parentKey = target.getAttribute('data-parentkey') as string
+    event.dataTransfer.setData('drag-key', key);
+    (window as any)._dragKey = key;
+    (window as any)._dragParentkey = parentKey;
+    (window as any)._dragTarget = target
+  }
+
+  const onDragEnd: React.DragEventHandler<HTMLTableRowElement> = (event) => {
+    const target = event.currentTarget
+    target.style.opacity = '1'
+  }
+
+  const onDrag: React.DragEventHandler<HTMLTableRowElement> = (event) => {
+
+  }
+
   return (
     <>
       {
         data.map((d) => {
           return (
             <>
-              <tr key={d.key} >
+              <tr className={classnames('tree-row')} key={d.key} data-key={d.key} onDragStart={onDragStart} onDragEnd={onDragEnd} onDrag={onDrag} data-parentkey={d.parentKey} draggable>
                 {
-                  DragTr(d)
+                  DragTd(d)
                 }
               </tr>
               {
