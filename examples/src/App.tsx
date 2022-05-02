@@ -1,9 +1,9 @@
 import { DragTreeTable } from '../../src/index'
-import { column } from './data'
+import { columns, data } from './data'
 function App() {
   return (
     <div className="App">
-      <DragTreeTable column={column} resize border/>
+      <DragTreeTable columns={columns} data={data} resize border />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 export interface DragTreeColumnProps {
   width: number | string
-  title?: string
+  key?: string
   flex?: number
   border?: boolean
   children?: any
