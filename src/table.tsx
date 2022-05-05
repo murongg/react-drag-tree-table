@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import React, { useState } from 'react'
 import type { DragTreeColumnProps } from './column'
 import { DragTreeRow } from './row'
-import type { RowDataMap } from './utils'
+import { exchangeData, RowDataMap } from './utils'
 import { clearHoverStatus, setOpenAll, transformData } from './utils'
 export interface DragTreeTableProps {
   data: Record<string, any>[]
@@ -20,7 +20,7 @@ export interface DragTreeTableProps {
   beforeDragOver?: Function
 }
 
-export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, key = "id" }) => {
+export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, key = 'id' }) => {
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
 
   const onDragOver: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
@@ -30,11 +30,10 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
 
   const onDrop: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
     filter(event.pageX, event.clientY)
-    if (event.clientY < 100) {
+    if (event.clientY < 100)
       window.scrollTo(0, scrollY - 6)
-    } else if (event.clientY > (document.body.clientHeight - 160)) {
+    else if (event.clientY > (document.body.clientHeight - 160))
       window.scrollTo(0, scrollY + 6)
-    }
   }
 
   function filter(x: number, y: number) {
@@ -91,10 +90,9 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       whereInsert = ''
       return
     }
-    console.log('dragKey:', dragKey)
-
-    console.log('targetKey:', targetKey)
-
+    const exchange = exchangeData(realData, dragKey, targetKey, whereInsert)
+    console.log(exchange)
+    setRealData(exchange)
     // console.log(dragRect, dragW, dragH)
   }
 
