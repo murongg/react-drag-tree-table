@@ -1,12 +1,12 @@
-# <center>react-drag-tree-table</center>
+# <p align="center">react-drag-tree-table</p>
 
-<center>
+<p align="center">
 
    [![NPM version](https://img.shields.io/npm/v/react-drag-tree-table?color=a1b858&label=)](https://www.npmjs.com/package/react-drag-tree-table)
    
-   [English](https://github.com/murongg/react-drag-tree-table/blob/v0.1.1/README.md) | 简体中文
+   [English](https://github.com/murongg/react-drag-tree-table/blob/main/README.md) | 简体中文
 
-</center>
+</p>
 
 ## 📦 Install
 
