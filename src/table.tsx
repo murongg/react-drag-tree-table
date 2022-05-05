@@ -4,14 +4,14 @@ import React, { useState } from 'react'
 import type { DragTreeColumnProps } from './column'
 import { DragTreeColumn } from './column'
 import { DragTreeRow } from './row'
-import type { RowDataMap } from './utils'
+import { findData, RowDataMap } from './utils'
 import { clearHoverStatus, exchangeData, setOpenAll, transformData } from './utils'
 export interface DragTreeTableProps {
   data: Record<string, any>[]
-  key: string
+  key?: string
   columns: DragTreeColumnProps[]
   isdraggable?: boolean
-  onDrag?: () => void
+  onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
   fixed?: string | boolean
   height?: string | number
   border?: boolean
@@ -21,7 +21,13 @@ export interface DragTreeTableProps {
   beforeDragOver?: Function
 }
 
-export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, key = 'id' }) => {
+export enum WHERE_INSERT {
+  TOP = 'TOP', // insert to target data above
+  CENTER = 'CENTER', // insert to target data children
+  BOTTOM = 'BOTTOM' // insert to target data below
+}
+
+export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, key = 'id', onDrag }) => {
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
 
   const onDragOver: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
@@ -35,16 +41,20 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
   }
 
   const [targetKey, setTargetKey] = useState<number | string>()
-  const [whereInsert, setWhereInsert] = useState<string>('')
+  const [whereInsert, setWhereInsert] = useState<WHERE_INSERT | null>(null)
 
   const onDrop: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = 'move'
     const dragKey = (window as any)._dragKey as string
     clearHoverStatus()
-    const exchange = exchangeData(realData, dragKey, targetKey, whereInsert)
-    if (exchange)
+    const exchange = exchangeData(realData, dragKey, targetKey, whereInsert || WHERE_INSERT.TOP)
+    if (exchange) {
       setRealData(exchange)
+      const currentData = findData(exchange, dragKey)?._data
+      const targetData = findData(exchange, targetKey)?._data
+      onDrag && onDrag(currentData, targetData, whereInsert)
+    }
   }
 
   function filter(x: number, y: number) {
@@ -59,7 +69,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
     }
     let hoverBlock: HTMLElement | undefined
     let targetKey
-    let whereInsert = ''
+    let whereInsert: WHERE_INSERT | null = null
     const rows = document.querySelectorAll('.tree-row')
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i]
@@ -79,17 +89,17 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
         hoverBlock = row.children[row.children.length - 1] as HTMLElement
         const rowHeight = (row as any).offsetHeight
         if (diffY / rowHeight > 3 / 4) {
-          whereInsert = 'bottom'
+          whereInsert = WHERE_INSERT.BOTTOM
         }
         else if (diffY / rowHeight > 1 / 4) {
           if (onlySameLevelCanDrag !== undefined) {
             // 不允许改变层级结构，只能改变上下顺序逻辑
             return
           }
-          whereInsert = 'center'
+          whereInsert = WHERE_INSERT.CENTER
         }
         else {
-          whereInsert = 'top'
+          whereInsert = WHERE_INSERT.TOP
         }
         break
       }
@@ -97,7 +107,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
     if (!targetKey) {
       // 匹配不到清空上一个状态
       clearHoverStatus()
-      whereInsert = ''
+      whereInsert = null
       return
     }
     if (hoverBlock) {
@@ -106,10 +116,10 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       const children0 = children[0] as HTMLDivElement
       const children1 = children[1] as HTMLDivElement
       const children2 = children[2] as HTMLDivElement
-      if (whereInsert === 'bottom' && children2.style.opacity !== '0.5')
+      if (whereInsert === WHERE_INSERT.BOTTOM && children2.style.opacity !== '0.5')
         children2.style.opacity = '0.5'
 
-      else if (whereInsert === 'center' && children1.style.opacity !== '0.5')
+      else if (whereInsert === WHERE_INSERT.CENTER && children1.style.opacity !== '0.5')
         children1.style.opacity = '0.5'
 
       else if (children0.style.opacity !== '0.5')

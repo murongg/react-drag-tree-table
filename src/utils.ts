@@ -1,5 +1,6 @@
 import { cloneDeep } from 'lodash-es'
 import type { DragTreeColumnProps } from '.'
+import { WHERE_INSERT } from './table'
 export interface RowDataProps<T = any | undefined> {
   width?: number | string
   content: any
@@ -12,6 +13,7 @@ export interface RowDataMap<T = any | undefined> {
   children: RowDataMap<T>[]
   open: boolean
   childOpen: boolean
+  _data: T
 }
 
 export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[], parentKey: string | null, key: string): RowDataMap<any>[] {
@@ -26,6 +28,7 @@ export function transformData(columns: DragTreeColumnProps[], data: Record<strin
       children: [],
       open: true,
       childOpen: true,
+      _data: d
     }
     for (const col of columns) {
       res[i].props.push({
@@ -149,7 +152,7 @@ export function mergeCheck(data: RowDataMap[], currentKey: any, targetKey: any) 
   return result
 }
 
-export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any, whereInsert: string) {
+export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any, whereInsert: WHERE_INSERT) {
   if (mergeCheck(data, currentKey, targetKey))
     return
 
@@ -160,11 +163,11 @@ export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any
       const item = data[index]
       if (item.key === targetKey) {
         if (currentData) {
-          if (whereInsert === 'top')
+          if (whereInsert === WHERE_INSERT.TOP)
             data.splice(Number(index), 0, currentData)
-          else if (whereInsert === 'bottom')
+          else if (whereInsert === WHERE_INSERT.BOTTOM)
             data.splice(Number(index + 1), 0, currentData)
-          else if (whereInsert === 'center')
+          else if (whereInsert === WHERE_INSERT.CENTER)
             item.children.splice(0, 0, currentData)
         }
       }
