@@ -3,9 +3,9 @@
 <center>
 
    [![NPM version](https://img.shields.io/npm/v/react-drag-tree-table?color=a1b858&label=)](https://www.npmjs.com/package/react-drag-tree-table)
-
-   English | [简体中文](https://github.com/murongg/react-drag-tree-table/blob/v0.1.1/README.zh-Hans.md)
    
+   [English](https://github.com/murongg/react-drag-tree-table/blob/v0.1.1/README.md) | 简体中文
+
 </center>
 
 ## 📦 Install
@@ -27,11 +27,11 @@ import 'react-drag-tree-table/dist/index.css'
 
 |  option   | description  | default | type |
 |  ----  | ----  | ----  | ----  |
-| columns  | table columns | - | DragTreeColumnProps |
-| data  | table data | - | - |
-| key  | key from render data | - | "id" |
-| isdraggable  | whether it can be dragged | - | true |
-| onlySameLevelCanDrag  | drag-and-drop hierarchy changes are  prohibited | - | false |
+| columns  | 表格的列 | - | DragTreeColumnProps |
+| data  | 表格数据 | - | - |
+| key  | 渲染数据时所用到的key | - | "id" |
+| isdraggable  | 是否可拖拽 | - | true |
+| onlySameLevelCanDrag  | 禁止更改拖放层次结构 | - | false |
 
 
 ## ⛱ Interface
@@ -59,9 +59,9 @@ interface DragTreeTableProps {
 }
 
 enum WHERE_INSERT {
-  TOP = 'TOP', // drag onto target data
-  CENTER = 'CENTER', // drag to the target data children
-  BOTTOM = 'BOTTOM', // drag it below the target data
+  TOP = 'TOP', // 拖拽至目标数据上方
+  CENTER = 'CENTER', // 拖拽至目标数据子节点
+  BOTTOM = 'BOTTOM', // 拖拽至目标数据下方
 }
 ```
 
@@ -70,7 +70,7 @@ enum WHERE_INSERT {
 - [mafengwo/vue-drag-tree-table](https://github.com/mafengwo/vue-drag-tree-table)
 
 ## 📄 TODO
-- [ ] Perfect the documents
+- [ ] 完善文档
 - [x] onDrag
 - [ ] isdraggable
 - [ ] fixed

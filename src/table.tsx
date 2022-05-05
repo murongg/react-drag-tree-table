@@ -22,9 +22,9 @@ export interface DragTreeTableProps {
 }
 
 export enum WHERE_INSERT {
-  TOP = 'TOP', // insert to target data above
-  CENTER = 'CENTER', // insert to target data children
-  BOTTOM = 'BOTTOM', // insert to target data below
+  TOP = 'TOP', // drag onto target data
+  CENTER = 'CENTER', // drag to the target data children
+  BOTTOM = 'BOTTOM', // drag it below the target data
 }
 
 export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, key = 'id', onDrag }) => {
