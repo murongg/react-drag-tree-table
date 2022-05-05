@@ -49,11 +49,17 @@ interface DragTreeTableProps {
   key: string
   columns: DragTreeColumnProps[]
   isdraggable?: boolean
-  onDrag?: () => void
+  onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
   fixed?: string | boolean
   height?: string | number
   border?: boolean
   onlySameLevelCanDrag?: boolean
+}
+
+enum WHERE_INSERT {
+  TOP = 'TOP',
+  CENTER = 'CENTER',
+  BOTTOM = 'BOTTOM'
 }
 ```
 
