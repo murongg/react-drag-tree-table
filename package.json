@@ -51,16 +51,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@types/lodash-es": "^4.17.6",
-    "@unocss/preset-wind": "^0.32.7",
-    "lodash-es": "^4.17.21",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "unocss": "^0.32.7"
+    "react-dom": "^18.1.0"
   },
   "devDependencies": {
     "@babel/types": "^7.17.0",
     "@murongg/eslint-config": "^0.1.0",
+    "@types/lodash-es": "^4.17.6",
     "@types/node": "^17.0.23",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -71,8 +68,10 @@
     "esno": "^0.14.1",
     "gulp": "^4.0.2",
     "gulp-less": "^5.0.0",
+    "gulp-minify-css": "^1.2.4",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "lodash-es": "^4.17.21",
     "pnpm": "^6.32.6",
     "rimraf": "^3.0.2",
     "typescript": "^4.6.3",
