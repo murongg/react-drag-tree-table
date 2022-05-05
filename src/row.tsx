@@ -57,17 +57,13 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, onCli
     target.style.opacity = '1'
   }
 
-  const onDrag: React.DragEventHandler<HTMLTableRowElement> = (event) => {
-
-  }
-
   return (
     <>
       {
         data.map((d) => {
           return (
             <>
-              <tr className={classnames('tree-row')} key={d.key} data-key={d.key} onDragStart={onDragStart} onDragEnd={onDragEnd} onDrag={onDrag} data-parentkey={d.parentKey} draggable>
+              <tr className={classnames('tree-row')} key={d.key} data-key={d.key} onDragStart={onDragStart} onDragEnd={onDragEnd} data-parentkey={d.parentKey} draggable>
                 {
                   DragTd(d)
                 }

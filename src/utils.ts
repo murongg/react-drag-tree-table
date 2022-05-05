@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash-es'
-import { number } from 'prop-types'
 import type { DragTreeColumnProps } from '.'
 export interface RowDataProps<T> {
   content: any
@@ -91,13 +90,13 @@ export function clearHoverStatus() {
 export function findData(data: RowDataMap[], key: any) {
   let res: RowDataMap | undefined
   function deep(data: RowDataMap[]) {
-    for (let item of data) {
+    for (const item of data) {
       if (item.key === key) {
         res = item
-      } else {
-        if (item.children && item.children.length > 0) {
+      }
+      else {
+        if (item.children && item.children.length > 0)
           deep(item.children)
-        }
       }
     }
   }
@@ -108,44 +107,65 @@ export function findData(data: RowDataMap[], key: any) {
 export function findAndDeleteData(data: RowDataMap[], key: any) {
   let res: RowDataMap | undefined
   function deep(data: RowDataMap[]) {
-    for (let index in data) {
+    for (const index in data) {
       const item = data[index]
       if (item.key === key) {
         res = item
         data.splice(Number(index), 1)
-      } else {
-        if (item.children && item.children.length > 0) {
+      }
+      else {
+        if (item.children && item.children.length > 0)
           deep(item.children)
-        }
       }
     }
   }
   deep(data)
   return res
 }
+/**
+ * Check parent move to child
+ * @param currentKey
+ * @param targetKey
+ */
+export function mergeCheck(data: RowDataMap[], currentKey: any, targetKey: any) {
+  let result = false
+  const currentData = findData(data, currentKey)
+  function deep(data: RowDataMap[]) {
+    for (const item of data) {
+      if (item.key === targetKey) {
+        result = true
+        break
+      }
+    }
+  }
+  if (currentData)
+    deep(currentData?.children)
 
+  return result
+}
 
 export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any, whereInsert: string) {
-  let result: RowDataMap[] = cloneDeep(data)
+  if (mergeCheck(data, currentKey, targetKey))
+    return
+
+  const result: RowDataMap[] = cloneDeep(data)
   const currentData = findAndDeleteData(result, currentKey)
-  console.log(whereInsert)
   function deepFind(data: RowDataMap[]) {
-    for (let index in data) {
+    for (const index in data) {
       const item = data[index]
       if (item.key === targetKey) {
         if (currentData) {
-          if (whereInsert === 'top') {
+          if (whereInsert === 'top')
             data.splice(Number(index), 0, currentData)
-          } else if (whereInsert === 'bottom') {
+          else if (whereInsert === 'bottom')
             data.splice(Number(index + 1), 0, currentData)
-          } else if (whereInsert === 'center') {
+          else if (whereInsert === 'center')
             item.children.splice(0, 0, currentData)
-          }
         }
-      } else {
-        if (item.children && item.children.length > 0) {
+      }
+      else {
+        if (item.children && item.children.length > 0)
           deepFind(item.children)
-        }
       }
     }
   }

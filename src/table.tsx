@@ -3,8 +3,8 @@ import classnames from 'classnames'
 import React, { useState } from 'react'
 import type { DragTreeColumnProps } from './column'
 import { DragTreeRow } from './row'
-import { exchangeData, RowDataMap } from './utils'
-import { clearHoverStatus, setOpenAll, transformData } from './utils'
+import type { RowDataMap } from './utils'
+import { clearHoverStatus, exchangeData, setOpenAll, transformData } from './utils'
 export interface DragTreeTableProps {
   data: Record<string, any>[]
   key: string
@@ -91,9 +91,8 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       return
     }
     const exchange = exchangeData(realData, dragKey, targetKey, whereInsert)
-    console.log(exchange)
-    setRealData(exchange)
-    // console.log(dragRect, dragW, dragH)
+    if (exchange)
+      setRealData(exchange)
   }
 
   return (
