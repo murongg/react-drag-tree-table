@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash-es'
-import type { DragTreeColumnProps } from '.'
 import { WHERE_INSERT } from './table'
+import type { DragTreeColumnProps } from '.'
 export interface RowDataProps<T = any | undefined> {
   width?: number | string
   content: any
@@ -28,7 +28,7 @@ export function transformData(columns: DragTreeColumnProps[], data: Record<strin
       children: [],
       open: true,
       childOpen: true,
-      _data: d
+      _data: d,
     }
     for (const col of columns) {
       res[i].props.push({

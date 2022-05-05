@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import type { DragTreeColumnProps } from './column'
 import { DragTreeColumn } from './column'
 import { DragTreeRow } from './row'
-import { findData, RowDataMap } from './utils'
-import { clearHoverStatus, exchangeData, setOpenAll, transformData } from './utils'
+import type { RowDataMap } from './utils'
+import { clearHoverStatus, exchangeData, findData, setOpenAll, transformData } from './utils'
 export interface DragTreeTableProps {
   data: Record<string, any>[]
   key?: string
@@ -24,7 +24,7 @@ export interface DragTreeTableProps {
 export enum WHERE_INSERT {
   TOP = 'TOP', // insert to target data above
   CENTER = 'CENTER', // insert to target data children
-  BOTTOM = 'BOTTOM' // insert to target data below
+  BOTTOM = 'BOTTOM', // insert to target data below
 }
 
 export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, key = 'id', onDrag }) => {
