@@ -1,11 +1,12 @@
 import { cloneDeep } from 'lodash-es'
 import type { DragTreeColumnProps } from '.'
-export interface RowDataProps<T> {
+export interface RowDataProps<T = any | undefined> {
+  width?: number | string
   content: any
   _data: T
 }
 export interface RowDataMap<T = any | undefined> {
-  key: string | number
+  key: string
   parentKey: string | number | null
   props: RowDataProps<T>[]
   children: RowDataMap<T>[]
@@ -13,9 +14,8 @@ export interface RowDataMap<T = any | undefined> {
   childOpen: boolean
 }
 
-export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[], parentKey: string | number | null, key: string): RowDataMap<any>[] {
+export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[], parentKey: string | null, key: string): RowDataMap<any>[] {
   const res: RowDataMap<any>[] = []
-  const keys = columns.map(col => col.key)
 
   for (const i in data) {
     const d = data[i]
@@ -27,9 +27,10 @@ export function transformData(columns: DragTreeColumnProps[], data: Record<strin
       open: true,
       childOpen: true,
     }
-    for (const k of keys) {
+    for (const col of columns) {
       res[i].props.push({
-        content: d[k as string],
+        width: col.width,
+        content: d[col.key as string],
         _data: d,
       })
     }
@@ -76,15 +77,19 @@ export function setDataOpenStatus(data: RowDataMap[], open: boolean) {
 }
 
 export function clearHoverStatus() {
-  // const rows = document.querySelectorAll('.tree-row')
-  // for (let i = 0; i < rows.length; i++) {
-  //   const row = rows[i]
-  //   const hoverBlock = row.children[row.children.length - 1]
-  //   hoverBlock.style.display = 'none'
-  //   hoverBlock.children[0].style.opacity = 0.1
-  //   hoverBlock.children[1].style.opacity = 0.1
-  //   hoverBlock.children[2].style.opacity = 0.1
-  // }
+  const rows = document.querySelectorAll('.tree-row')
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i]
+    const hoverBlock = row.children[row.children.length - 1] as HTMLDivElement
+    hoverBlock.style.display = 'none'
+    const children = hoverBlock.children as HTMLCollection
+    const children0 = children[0] as HTMLDivElement
+    const children1 = children[1] as HTMLDivElement
+    const children2 = children[2] as HTMLDivElement
+    children0.style.opacity = '0.1'
+    children1.style.opacity = '0.1'
+    children2.style.opacity = '0.1'
+  }
 }
 
 export function findData(data: RowDataMap[], key: any) {

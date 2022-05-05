@@ -2,6 +2,7 @@
 import classnames from 'classnames'
 import React, { useState } from 'react'
 import type { DragTreeColumnProps } from './column'
+import { DragTreeColumn } from './column'
 import { DragTreeRow } from './row'
 import type { RowDataMap } from './utils'
 import { clearHoverStatus, exchangeData, setOpenAll, transformData } from './utils'
@@ -26,9 +27,6 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
   const onDragOver: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = 'move'
-  }
-
-  const onDrop: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
     filter(event.pageX, event.clientY)
     if (event.clientY < 100)
       window.scrollTo(0, scrollY - 6)
@@ -36,9 +34,21 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       window.scrollTo(0, scrollY + 6)
   }
 
+  const [targetKey, setTargetKey] = useState<number | string>()
+  const [whereInsert, setWhereInsert] = useState<string>('')
+
+  const onDrop: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+    const dragKey = (window as any)._dragKey as string
+    clearHoverStatus()
+    const exchange = exchangeData(realData, dragKey, targetKey, whereInsert)
+    if (exchange)
+      setRealData(exchange)
+  }
+
   function filter(x: number, y: number) {
     const dragTarget = (window as any)._dragTarget as Element
-    const dragKey = (window as any)._dragKey as string
     const dragParentKey = (window as any)._dragParentKey as string
     const dragRect = dragTarget.getBoundingClientRect()
     const dragW = dragRect.left + dragTarget.clientWidth
@@ -47,7 +57,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       // 当前正在拖拽原始块不允许插入
       return
     }
-    let hoverBlock
+    let hoverBlock: HTMLElement | undefined
     let targetKey
     let whereInsert = ''
     const rows = document.querySelectorAll('.tree-row')
@@ -66,7 +76,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
           return
 
         targetKey = row.getAttribute('data-key')
-        hoverBlock = row.children[row.children.length - 1]
+        hoverBlock = row.children[row.children.length - 1] as HTMLElement
         const rowHeight = (row as any).offsetHeight
         if (diffY / rowHeight > 3 / 4) {
           whereInsert = 'bottom'
@@ -90,28 +100,42 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       whereInsert = ''
       return
     }
-    const exchange = exchangeData(realData, dragKey, targetKey, whereInsert)
-    if (exchange)
-      setRealData(exchange)
+    if (hoverBlock) {
+      hoverBlock.style.display = 'block'
+      const children = hoverBlock.children
+      const children0 = children[0] as HTMLDivElement
+      const children1 = children[1] as HTMLDivElement
+      const children2 = children[2] as HTMLDivElement
+      if (whereInsert === 'bottom' && children2.style.opacity !== '0.5')
+        children2.style.opacity = '0.5'
+
+      else if (whereInsert === 'center' && children1.style.opacity !== '0.5')
+        children1.style.opacity = '0.5'
+
+      else if (children0.style.opacity !== '0.5')
+        children0.style.opacity = '0.5'
+    }
+    setTargetKey(targetKey)
+    setWhereInsert(whereInsert)
   }
 
   return (
-    <table className={classnames('table-auto', 'border-1')}>
-      <thead className={classnames('border-1')}>
-        <tr>
-          {
-            columns.map((col, index) => {
-              return <th key={index} style={{ width: typeof col.width === 'number' ? `${col.width}px` : col.width }}>{col.key}</th>
-            })
-          }
-        </tr>
-      </thead>
-      <tbody onDragOver={onDragOver} onDrop={onDrop} >
+    <div className={classnames('table-auto')}>
+      <div className={'drag-tree-table-header'}>
+        {
+          columns.map((col) => {
+            return <DragTreeColumn width={col.width} key={col.key} lable={col.lable}>
+              {col.children}
+            </DragTreeColumn>
+          })
+        }
+      </div>
+      <div onDragOver={onDragOver} onDrop={onDrop} >
         <DragTreeRow data={realData} onClick={(event, data) => {
           const newData = setOpenAll(realData, data)
           setRealData(newData)
         }}></DragTreeRow>
-      </tbody>
-    </table>
+      </div>
+    </div>
   )
 }

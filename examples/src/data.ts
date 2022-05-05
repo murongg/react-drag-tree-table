@@ -1,17 +1,21 @@
 import type { DragTreeColumnProps } from '../../src/column'
 
 export const columns: DragTreeColumnProps[] = [{
-  width: '20%',
+  width: '40%',
   key: 'title',
+  lable: '标题',
 }, {
-  width: '20%',
+  width: '30%',
   key: 'name',
+  lable: '名称',
 }, {
   width: '20%',
   key: 'desc',
+  lable: '描述',
 }, {
-  width: '20%',
+  width: '10%',
   key: 'state',
+  lable: '状态',
 }]
 
 export const data = [{
