@@ -6,10 +6,11 @@ export interface DragTreeRowProps {
   data: RowDataMap<any>[]
   depth?: number
   isdraggable?: boolean
+  border?: boolean
   onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: any) => void
 }
 
-export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdraggable, onClick }) => {
+export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdraggable, border, onClick }) => {
   const Space: any = []
   for (let i = 0; i < new Array(depth).length; i++)
     Space.push(<span className="space" key={i}></span>)
@@ -17,7 +18,7 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
   const DragTd = (d: RowDataMap) => {
     return d.props.map((p: RowDataProps, index: number) => {
       const TdContent = () => {
-        return <DragTreeColumn width={p.width}>
+        return <DragTreeColumn width={p.width} border={border}>
           <span onClick={(e) => {
             d.open && onClick(e, d, p)
           }}>
@@ -80,7 +81,7 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
                 </div>
               </div>
               {
-                d.children && d.children.length > 0 && DragTreeRow({ data: d.children, depth: depth + 1, onClick })
+                d.children && d.children.length > 0 && DragTreeRow({ data: d.children, depth: depth + 1, border, onClick })
               }
             </div>
           )

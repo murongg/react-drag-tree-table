@@ -27,7 +27,7 @@ export enum WHERE_INSERT {
   BOTTOM = 'BOTTOM', // drag it below the target data
 }
 
-export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable, key = 'id', onDrag }) => {
+export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable, key = 'id', border, onDrag }) => {
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
 
   const onDragOver: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
@@ -130,18 +130,18 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
   }
 
   return (
-    <div className={classnames('table-auto')}>
+    <div className={classnames('table-auto', 'drag-tree-table', border ? 'border' : '')}>
       <div className={'drag-tree-table-header'}>
         {
           columns.map((col) => {
-            return <DragTreeColumn width={col.width} key={col.key} lable={col.lable}>
+            return <DragTreeColumn width={col.width} key={col.key} lable={col.lable} border={border}>
               {col.children}
             </DragTreeColumn>
           })
         }
       </div>
       <div onDragOver={onDragOver} onDrop={onDrop} >
-        <DragTreeRow data={realData} isdraggable={isdraggable} onClick={(event, data) => {
+        <DragTreeRow data={realData} isdraggable={isdraggable} border={border} onClick={(event, data) => {
           const newData = setOpenAll(realData, data)
           setRealData(newData)
         }}></DragTreeRow>

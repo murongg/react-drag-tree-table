@@ -31,6 +31,7 @@ import 'react-drag-tree-table/dist/index.css'
 | data  | 表格数据 | - | - |
 | key  | 渲染数据时所用到的key | - | "id" |
 | isdraggable  | 是否可拖拽 | - | true |
+| border  | 表格边框 | - | false |
 | onlySameLevelCanDrag  | 禁止更改拖放层次结构 | - | false |
 
 
@@ -75,6 +76,5 @@ enum WHERE_INSERT {
 - [x] isdraggable
 - [ ] fixed
 - [ ] height
-- [ ] border
+- [x] border
 - [ ] onlySameLevelCanDrag
-- [ ] border

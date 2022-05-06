@@ -31,6 +31,7 @@ import 'react-drag-tree-table/dist/index.css'
 | data  | table data | - | - |
 | key  | key from render data | - | "id" |
 | isdraggable  | whether it can be dragged | - | true |
+| border  | table border | - | false |
 | onlySameLevelCanDrag  | drag-and-drop hierarchy changes are  prohibited | - | false |
 
 
@@ -75,6 +76,5 @@ enum WHERE_INSERT {
 - [x] isdraggable
 - [ ] fixed
 - [ ] height
-- [ ] border
+- [x] border
 - [ ] onlySameLevelCanDrag
-- [ ] border
