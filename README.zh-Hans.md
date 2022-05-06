@@ -80,4 +80,4 @@ enum WHERE_INSERT {
 - [x] fixed
 - [x] height
 - [x] border
-- [ ] onlySameLevelCanDrag
+- [x] onlySameLevelCanDrag
