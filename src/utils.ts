@@ -155,6 +155,11 @@ export function mergeCheck(data: RowDataMap[], currentKey: any, targetKey: any) 
 }
 
 export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any, whereInsert: WHERE_INSERT) {
+  // console.log(currentKey, targetKey, whereInsert)
+  if (!currentKey || !targetKey || !whereInsert)
+    return
+  if (currentKey === targetKey)
+    return
   if (mergeCheck(data, currentKey, targetKey))
     return
 
@@ -181,5 +186,4 @@ export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any
   }
   deepFind(result)
   return result
-  // console.log(data)
 }

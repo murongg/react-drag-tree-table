@@ -38,8 +38,8 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
   const onDragStart: React.DragEventHandler<HTMLDivElement> = (event) => {
     const target = event.target as HTMLElement
     target.style.opacity = '0.5'
-    const key = target.children[0].getAttribute('data-key') as string
-    const parentKey = target.children[0].getAttribute('data-parentkey') as string
+    const key = target.getAttribute('data-key') as string
+    const parentKey = target.getAttribute('data-parentkey') as string
 
     (window as any)._dragKey = key;
     (window as any)._dragParentkey = parentKey;
@@ -56,14 +56,13 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
       {
         data.map((d) => {
           return (
-            <div
-              key={d.key}
-              onDragStart={onDragStart}
-              onDragEnd={onDragEnd}
-              draggable={isdraggable}
-            >
+
+            <>
               <div
                 className={classnames('tree-row')}
+                onDragStart={onDragStart}
+                onDragEnd={onDragEnd}
+                draggable={isdraggable}
                 data-key={d.key}
                 data-parentkey={d.parentKey}
               >
@@ -81,9 +80,9 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
                 </div>
               </div>
               {
-                d.children && d.children.length > 0 && DragTreeRow({ data: d.children, depth: depth + 1, border, onClick })
-              }
-            </div>
+                d.children && d.children.length > 0 && DragTreeRow({ data: d.children, depth: depth + 1, border, isdraggable, onClick })
+              }</>
+
           )
         })
       }

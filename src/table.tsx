@@ -27,7 +27,7 @@ export enum WHERE_INSERT {
   BOTTOM = 'BOTTOM', // drag it below the target data
 }
 
-export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable, key = 'id', border, fixed, height = 400, onDrag }) => {
+export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable = true, key = 'id', border, fixed, height = 400, onDrag }) => {
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
   const [bodyStyle] = useState({
     overflow: fixed ? 'auto' : 'hidden',
