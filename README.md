@@ -72,7 +72,7 @@ enum WHERE_INSERT {
 ## 📄 TODO
 - [ ] Perfect the documents
 - [x] onDrag
-- [ ] isdraggable
+- [x] isdraggable
 - [ ] fixed
 - [ ] height
 - [ ] border

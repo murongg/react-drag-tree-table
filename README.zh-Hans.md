@@ -72,7 +72,7 @@ enum WHERE_INSERT {
 ## 📄 TODO
 - [ ] 完善文档
 - [x] onDrag
-- [ ] isdraggable
+- [x] isdraggable
 - [ ] fixed
 - [ ] height
 - [ ] border

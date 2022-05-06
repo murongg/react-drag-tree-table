@@ -5,10 +5,11 @@ import type { RowDataMap, RowDataProps } from './utils'
 export interface DragTreeRowProps {
   data: RowDataMap<any>[]
   depth?: number
+  isdraggable?: boolean
   onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: any) => void
 }
 
-export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, onClick }) => {
+export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdraggable, onClick }) => {
   const Space: any = []
   for (let i = 0; i < new Array(depth).length; i++)
     Space.push(<span className="space" key={i}></span>)
@@ -58,7 +59,7 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, onCli
               key={d.key}
               onDragStart={onDragStart}
               onDragEnd={onDragEnd}
-              draggable
+              draggable={isdraggable}
             >
               <div
                 className={classnames('tree-row')}
