@@ -31,7 +31,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
   const [bodyStyle] = useState({
     overflow: fixed ? 'auto' : 'hidden',
-    height: fixed ? height + 'px' : 'auto'
+    height: fixed ? `${height}px` : 'auto',
   })
   const onDragOver: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
     event.preventDefault()
@@ -143,7 +143,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
           })
         }
       </div>
-      <div className={classnames("drag-tree-table-body")} style={bodyStyle} onDragOver={onDragOver} onDrop={onDrop} >
+      <div className={classnames('drag-tree-table-body')} style={bodyStyle} onDragOver={onDragOver} onDrop={onDrop} >
         <DragTreeRow data={realData} isdraggable={isdraggable} border={border} onClick={(event, data) => {
           const newData = setOpenAll(realData, data)
           setRealData(newData)
