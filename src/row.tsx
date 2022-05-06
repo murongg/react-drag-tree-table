@@ -18,7 +18,7 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
   const DragTd = (d: RowDataMap) => {
     return d.props.map((p: RowDataProps, index: number) => {
       const TdContent = () => {
-        return <DragTreeColumn width={p.width} border={border}>
+        return <DragTreeColumn width={p.width} border={border} flex={p.flex}>
           <span onClick={(e) => {
             d.open && onClick(e, d, p)
           }}>

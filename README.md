@@ -34,6 +34,7 @@ import 'react-drag-tree-table/dist/index.css'
 | height  | table height | - | 400(px) |
 | border  | table border | - | false |
 | fixed  | fixed table header | - | false |
+| flex  | automatic filling of remaining areas, follow the flex layout of CSS | - | false |
 | onlySameLevelCanDrag  | drag-and-drop hierarchy changes are  prohibited | - | false |
 
 

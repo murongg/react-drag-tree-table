@@ -4,6 +4,7 @@ import type { DragTreeColumnProps } from '.'
 export interface RowDataProps<T = any | undefined> {
   width?: number | string
   content: any
+  flex?: number
   _data: T
 }
 export interface RowDataMap<T = any | undefined> {
@@ -34,6 +35,7 @@ export function transformData(columns: DragTreeColumnProps[], data: Record<strin
       res[i].props.push({
         width: col.width,
         content: d[col.key as string],
+        flex: col.flex,
         _data: d,
       })
     }

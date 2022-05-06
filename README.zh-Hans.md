@@ -34,6 +34,7 @@ import 'react-drag-tree-table/dist/index.css'
 | height  | 表格高度 | - | 400(px) |
 | border  | 表格边框 | - | false |
 | fixed  | 固定表头 | - | false |
+| flex  | 自动填充剩余区域，遵循CSS的flex布局 | - | false |
 | onlySameLevelCanDrag  | 禁止更改拖放层次结构 | - | false |
 
 

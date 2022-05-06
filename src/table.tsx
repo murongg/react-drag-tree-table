@@ -137,7 +137,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       <div className={'drag-tree-table-header'}>
         {
           columns.map((col) => {
-            return <DragTreeColumn width={col.width} key={col.key} lable={col.lable} border={border}>
+            return <DragTreeColumn width={col.width} key={col.key} lable={col.lable} border={border} flex={col.flex}>
               {col.children}
             </DragTreeColumn>
           })
