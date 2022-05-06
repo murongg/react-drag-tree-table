@@ -12,7 +12,7 @@ export interface DragTreeTableProps {
   columns: DragTreeColumnProps[]
   isdraggable?: boolean
   onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
-  fixed?: string | boolean
+  fixed?: boolean
   height?: string | number
   border?: boolean
   onlySameLevelCanDrag?: string
@@ -27,9 +27,12 @@ export enum WHERE_INSERT {
   BOTTOM = 'BOTTOM', // drag it below the target data
 }
 
-export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable, key = 'id', border, onDrag }) => {
+export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable, key = 'id', border, fixed, height = 400, onDrag }) => {
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
-
+  const [bodyStyle] = useState({
+    overflow: fixed ? 'auto' : 'hidden',
+    height: fixed ? height + 'px' : 'auto'
+  })
   const onDragOver: React.DragEventHandler<HTMLTableSectionElement> = (event) => {
     event.preventDefault()
     event.dataTransfer.dropEffect = 'move'
@@ -140,7 +143,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
           })
         }
       </div>
-      <div onDragOver={onDragOver} onDrop={onDrop} >
+      <div className={classnames("drag-tree-table-body")} style={bodyStyle} onDragOver={onDragOver} onDrop={onDrop} >
         <DragTreeRow data={realData} isdraggable={isdraggable} border={border} onClick={(event, data) => {
           const newData = setOpenAll(realData, data)
           setRealData(newData)

@@ -31,7 +31,9 @@ import 'react-drag-tree-table/dist/index.css'
 | data  | 表格数据 | - | - |
 | key  | 渲染数据时所用到的key | - | "id" |
 | isdraggable  | 是否可拖拽 | - | true |
+| height  | 表格高度 | - | 400(px) |
 | border  | 表格边框 | - | false |
+| fixed  | 固定表头 | - | false |
 | onlySameLevelCanDrag  | 禁止更改拖放层次结构 | - | false |
 
 
@@ -53,7 +55,7 @@ interface DragTreeTableProps {
   columns: DragTreeColumnProps[]
   isdraggable?: boolean
   onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
-  fixed?: string | boolean
+  fixed?: boolean
   height?: string | number
   border?: boolean
   onlySameLevelCanDrag?: boolean
@@ -74,7 +76,7 @@ enum WHERE_INSERT {
 - [ ] 完善文档
 - [x] onDrag
 - [x] isdraggable
-- [ ] fixed
-- [ ] height
+- [x] fixed
+- [x] height
 - [x] border
 - [ ] onlySameLevelCanDrag

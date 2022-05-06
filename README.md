@@ -31,7 +31,9 @@ import 'react-drag-tree-table/dist/index.css'
 | data  | table data | - | - |
 | key  | key from render data | - | "id" |
 | isdraggable  | whether it can be dragged | - | true |
+| height  | table height | - | 400(px) |
 | border  | table border | - | false |
+| fixed  | fixed table header | - | false |
 | onlySameLevelCanDrag  | drag-and-drop hierarchy changes are  prohibited | - | false |
 
 
@@ -53,7 +55,7 @@ interface DragTreeTableProps {
   columns: DragTreeColumnProps[]
   isdraggable?: boolean
   onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
-  fixed?: string | boolean
+  fixed?: boolean
   height?: string | number
   border?: boolean
   onlySameLevelCanDrag?: boolean
@@ -74,7 +76,7 @@ enum WHERE_INSERT {
 - [ ] Perfect the documents
 - [x] onDrag
 - [x] isdraggable
-- [ ] fixed
-- [ ] height
+- [x] fixed
+- [x] height
 - [x] border
 - [ ] onlySameLevelCanDrag
