@@ -19,10 +19,11 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
     return d.props.map((p: RowDataProps, index: number) => {
       const TdContent = () => {
         return <DragTreeColumn width={p.width} border={border} flex={p.flex}>
-          <span onClick={(e) => {
-            d.open && onClick(e, d, p)
-          }}>
+          <span>
             {depth !== 0 && index === 0 ? Space : ''}
+            {d.children && d.children.length > 0 && index === 0 && <span className={classnames('zip-icon', d.childOpen ? 'arrow-bottom' : 'arrow-right')} onClick={(e) => {
+              d.open && onClick(e, d, p)
+            }}></span>}
             <span>{p.content}</span>
           </span>
         </DragTreeColumn>
@@ -56,8 +57,7 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
       {
         data.map((d) => {
           return (
-
-            <>
+            <div key={d.key}>
               <div
                 className={classnames('tree-row')}
                 onDragStart={onDragStart}
@@ -81,8 +81,8 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
               </div>
               {
                 d.children && d.children.length > 0 && DragTreeRow({ data: d.children, depth: depth + 1, border, isdraggable, onClick })
-              }</>
-
+              }
+            </div>
           )
         })
       }
