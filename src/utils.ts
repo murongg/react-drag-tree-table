@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash-es'
-import { WHERE_INSERT } from './table'
+import { WHERE_INSERT } from './interface'
 import type { DragTreeColumnProps, RowDataMap } from './interface'
 
 export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[], parentKey: string | null, key: string): RowDataMap<any>[] {
