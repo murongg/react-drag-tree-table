@@ -1,21 +1,6 @@
 import { cloneDeep } from 'lodash-es'
 import { WHERE_INSERT } from './table'
-import type { DragTreeColumnProps } from '.'
-export interface RowDataProps<T = any | undefined> {
-  width?: number | string
-  content: any
-  flex?: number
-  _data: T
-}
-export interface RowDataMap<T = any | undefined> {
-  key: string
-  parentKey: string | number | null
-  props: RowDataProps<T>[]
-  children: RowDataMap<T>[]
-  open: boolean
-  childOpen: boolean
-  _data: T
-}
+import type { DragTreeColumnProps, RowDataMap } from './interface'
 
 export function transformData(columns: DragTreeColumnProps[], data: Record<string, any>[], parentKey: string | null, key: string): RowDataMap<any>[] {
   const res: RowDataMap<any>[] = []
@@ -37,6 +22,7 @@ export function transformData(columns: DragTreeColumnProps[], data: Record<strin
         content: d[col.key as string],
         flex: col.flex,
         _data: d,
+        render: col.render,
       })
     }
     if (d.children && d.children.length > 0)

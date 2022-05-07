@@ -1,31 +1,11 @@
 /* eslint-disable react/prop-types */
 import classnames from 'classnames'
 import React, { useState } from 'react'
-import type { DragTreeColumnProps } from './column'
 import { DragTreeColumn } from './column'
+import type { DragTreeTableProps, RowDataMap } from './interface'
+import { WHERE_INSERT } from './interface'
 import { DragTreeRow } from './row'
-import type { RowDataMap } from './utils'
 import { clearHoverStatus, exchangeData, findData, setOpenAll, transformData } from './utils'
-export interface DragTreeTableProps {
-  data: Record<string, any>[]
-  key?: string
-  columns: DragTreeColumnProps[]
-  isdraggable?: boolean
-  onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
-  fixed?: boolean
-  height?: string | number
-  border?: boolean
-  onlySameLevelCanDrag?: string
-  hightRowChange?: string
-  resize?: boolean
-  beforeDragOver?: Function
-}
-
-export enum WHERE_INSERT {
-  TOP = 'TOP', // drag onto target data
-  CENTER = 'CENTER', // drag to the target data children
-  BOTTOM = 'BOTTOM', // drag it below the target data
-}
 
 export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable = true, key = 'id', border, fixed, height = 400, onDrag }) => {
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
@@ -137,9 +117,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
       <div className={'drag-tree-table-header'}>
         {
           columns.map((col) => {
-            return <DragTreeColumn width={col.width} key={col.key} lable={col.lable} border={border} flex={col.flex}>
-              {col.children}
-            </DragTreeColumn>
+            return <DragTreeColumn width={col.width} key={col.key} lable={col.lable} border={border} flex={col.flex}></DragTreeColumn>
           })
         }
       </div>

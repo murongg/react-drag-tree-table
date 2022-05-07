@@ -1,14 +1,7 @@
 import classnames from 'classnames'
 import React from 'react'
 import { DragTreeColumn } from './column'
-import type { RowDataMap, RowDataProps } from './utils'
-export interface DragTreeRowProps {
-  data: RowDataMap<any>[]
-  depth?: number
-  isdraggable?: boolean
-  border?: boolean
-  onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: any) => void
-}
+import type { DragTreeRowProps, RowDataMap, RowDataProps } from './interface'
 
 export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdraggable, border, onClick }) => {
   const Space: any = []
@@ -24,7 +17,7 @@ export const DragTreeRow: React.FC<DragTreeRowProps> = ({ data, depth = 0, isdra
             {d.children && d.children.length > 0 && index === 0 && <span className={classnames('zip-icon', d.childOpen ? 'arrow-bottom' : 'arrow-right')} onClick={(e) => {
               d.open && onClick(e, d, p)
             }}></span>}
-            <span>{p.content}</span>
+            <span>{p.render ? p.render(p.content, p._data, index) : p.content}</span>
           </span>
         </DragTreeColumn>
       }
