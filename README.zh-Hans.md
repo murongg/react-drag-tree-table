@@ -37,20 +37,34 @@ import 'react-drag-tree-table/dist/index.css'
 | flex  | 自动填充剩余区域，遵循CSS的flex布局 | - | false |
 | onlySameLevelCanDrag  | 禁止更改拖放层次结构 | - | false |
 
+## 📁 Events
+
+|  event   | description  | default | type |
+|  ----  | ----  | ----  | ----  |
+| onDrag  | 在拖动行时执行的回调 | function(current, target, whereInsert) | - |
+| onExpand  | 单击行展开图标时执行的回调 | function(expanded, record) | - |
+
 
 ## ⛱ Interface
 
 ```ts
+export type render = (value: any, record: any, index: number) => ReactNode
+export type onExpand = (expanded: boolean, record: any) => void
+
 export interface DragTreeTableProps {
   data: Record<string, any>[]
   key?: string
   columns: DragTreeColumnProps[]
   isdraggable?: boolean
   onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
+  onExpand?: onExpand
   fixed?: boolean
   height?: string | number
   border?: boolean
   onlySameLevelCanDrag?: string
+  hightRowChange?: string
+  resize?: boolean
+  beforeDragOver?: Function
 }
 
 export enum WHERE_INSERT {
@@ -58,8 +72,6 @@ export enum WHERE_INSERT {
   CENTER = 'CENTER', // drag to the target data children
   BOTTOM = 'BOTTOM', // drag it below the target data
 }
-
-export type render = (value: any, record: any, index: number) => ReactNode
 
 export interface DragTreeColumnProps {
   width?: number | string
@@ -75,7 +87,7 @@ export interface DragTreeRowProps {
   depth?: number
   isdraggable?: boolean
   border?: boolean
-  onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: any) => void
+  onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: RowDataProps) => void
 }
 
 export interface RowDataProps<T = any | undefined> {

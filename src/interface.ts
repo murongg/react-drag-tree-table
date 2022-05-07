@@ -1,11 +1,15 @@
 import type { ReactNode } from 'react'
 
+export type render = (value: any, record: any, index: number) => ReactNode
+export type onExpand = (expanded: boolean, record: any) => void
+
 export interface DragTreeTableProps {
   data: Record<string, any>[]
   key?: string
   columns: DragTreeColumnProps[]
   isdraggable?: boolean
   onDrag?: (current: Record<string, any>, target: Record<string, any>, whereInsert: WHERE_INSERT | null) => void
+  onExpand?: onExpand
   fixed?: boolean
   height?: string | number
   border?: boolean
@@ -21,8 +25,6 @@ export enum WHERE_INSERT {
   BOTTOM = 'BOTTOM', // drag it below the target data
 }
 
-export type render = (value: any, record: any, index: number) => ReactNode
-
 export interface DragTreeColumnProps {
   width?: number | string
   key?: string | number
@@ -37,7 +39,7 @@ export interface DragTreeRowProps {
   depth?: number
   isdraggable?: boolean
   border?: boolean
-  onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: any) => void
+  onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: RowDataProps) => void
 }
 
 export interface RowDataProps<T = any | undefined> {

@@ -7,7 +7,7 @@ import { WHERE_INSERT } from './interface'
 import { DragTreeRow } from './row'
 import { clearHoverStatus, exchangeData, findData, setOpenAll, transformData } from './utils'
 
-export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable = true, key = 'id', border, fixed, height = 400, onDrag }) => {
+export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onlySameLevelCanDrag, isdraggable = true, key = 'id', border, fixed, height = 400, onDrag, onExpand }) => {
   const [realData, setRealData] = useState<RowDataMap[]>(transformData(columns, data, null, key))
   const [bodyStyle] = useState({
     overflow: fixed ? 'auto' : 'hidden',
@@ -125,6 +125,7 @@ export const DragTreeTable: React.FC<DragTreeTableProps> = ({ columns, data, onl
         <DragTreeRow data={realData} isdraggable={isdraggable} border={border} onClick={(event, data) => {
           const newData = setOpenAll(realData, data)
           setRealData(newData)
+          onExpand && onExpand(!data.childOpen, data._data)
         }}></DragTreeRow>
       </div>
     </div>
