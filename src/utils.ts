@@ -9,7 +9,7 @@ export function transformData(columns: DragTreeColumnProps[], data: Record<strin
     const d = data[i]
     res[i] = {
       key: String(d[key]),
-      parentKey: parentKey || null,
+      parentKey: parentKey ? String(parentKey) : null,
       props: [],
       children: [],
       open: true,
@@ -141,7 +141,6 @@ export function mergeCheck(data: RowDataMap[], currentKey: any, targetKey: any) 
 }
 
 export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any, whereInsert: WHERE_INSERT) {
-  // console.log(currentKey, targetKey, whereInsert)
   if (!currentKey || !targetKey || !whereInsert)
     return
   if (currentKey === targetKey)
@@ -156,13 +155,20 @@ export function exchangeData(data: RowDataMap[], currentKey: any, targetKey: any
       const item = data[index]
       if (item.key === targetKey) {
         if (currentData) {
-          if (whereInsert === WHERE_INSERT.TOP)
+          if (whereInsert === WHERE_INSERT.TOP) {
+            currentData.parentKey = item.parentKey
             data.splice(Number(index), 0, currentData)
-          else if (whereInsert === WHERE_INSERT.BOTTOM)
+          }
+          else if (whereInsert === WHERE_INSERT.BOTTOM) {
+            currentData.parentKey = item.parentKey
             data.splice(Number(index + 1), 0, currentData)
-          else if (whereInsert === WHERE_INSERT.CENTER)
+          }
+          else if (whereInsert === WHERE_INSERT.CENTER) {
+            currentData.parentKey = item.key
             item.children.splice(0, 0, currentData)
+          }
         }
+        break
       }
       else {
         if (item.children && item.children.length > 0)
