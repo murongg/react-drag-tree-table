@@ -25,14 +25,14 @@ export enum WHERE_INSERT {
   BOTTOM = 'BOTTOM', // drag it below the target data
 }
 
-export interface DragTreeColumnProps extends Pick<DragTreeTableProps, "key" | "border"> {
+export interface DragTreeColumnProps extends Pick<DragTreeTableProps, 'key' | 'border'> {
   width?: number | string
   lable?: string
   flex?: number
   render?: render
 }
 
-export interface DragTreeRowProps extends Pick<DragTreeTableProps, "border"> {
+export interface DragTreeRowProps extends Pick<DragTreeTableProps, 'border'> {
   data: RowDataMap<any>[]
   depth?: number
   isdraggable?: boolean
@@ -40,7 +40,7 @@ export interface DragTreeRowProps extends Pick<DragTreeTableProps, "border"> {
   onClick: (event: React.MouseEvent<any, MouseEvent>, data: RowDataMap, current: RowDataProps) => void
 }
 
-export interface RowDataProps extends Pick<RowDataMap, "_data"> {
+export interface RowDataProps extends Pick<RowDataMap, '_data'> {
   width?: number | string
   content: any
   flex?: number
